@@ -71,7 +71,7 @@ function getdata(date_now){
     const token     = localStorage.getItem('token');
     const device    = localStorage.getItem('device');
 
-    fetch('http://localhost:3000/user/log', {
+    fetch(window.location.protocol+"//"+window.location.host+"/user/log", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

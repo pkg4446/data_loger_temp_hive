@@ -1,12 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     const list = document.getElementById('equipment-list');
-
     // 서버에서 데이터를 가져오는 함수
     function fetchEquipment() {
         // 여기에 실제 서버 URL을 입력하세요
         const userid    = localStorage.getItem('user');
         const token     = localStorage.getItem('token');
-        fetch('http://localhost:3000/user/list', {
+        fetch(window.location.protocol+"//"+window.location.host+"/user/list", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

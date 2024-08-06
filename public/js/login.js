@@ -8,7 +8,7 @@ document.getElementById('userForm').addEventListener('submit', function(event) {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    fetch('http://localhost:3000/user/login', {
+    fetch(window.location.protocol+"//"+window.location.host+"/user/login", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
