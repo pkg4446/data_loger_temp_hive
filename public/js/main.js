@@ -3,10 +3,73 @@ if(localStorage.getItem('user')==null || localStorage.getItem('token')==null){
 }else if(localStorage.getItem('device') === null){
     window.location.href = '/web/select';
 }else{
+    document.getElementById('today').value = new Date().toISOString().substring(0, 10);
+    getdata(new Date());
+}
+
+function day_change(flage){
+    let today = new Date(document.getElementById('today').value);
+    if(flage){
+        today.setDate(today.getDate()+1);
+    }else{
+        today.setDate(today.getDate()-1);
+    }
+    document.getElementById('today').value = today.toISOString().substring(0, 10);
+    getdata(today);
+}
+
+function getColor(temp) {
+    const minTemp = 0;
+    const maxTemp = 50;
+    const normalizedTemp = (temp - minTemp) / (maxTemp - minTemp);
+    let r, g, b;
+    if (normalizedTemp < 0.25) {
+        b = 255 * (1 - normalizedTemp * 4);
+        g = 255 * normalizedTemp * 4;
+        r = 0;
+    } else if (normalizedTemp < 0.5) {
+        b = 0;
+        g = 255;
+        r = 255 * (normalizedTemp - 0.25) * 4;
+    } else if (normalizedTemp < 0.75) {
+        b = 0;
+        g = 255 * (1 - (normalizedTemp - 0.5) * 4);
+        r = 255;
+    } else {
+        b = 0;
+        g = 0;
+        r = 255;
+    }
+    return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
+}
+
+function updateHoneycomb(temperatures, times, timeIndex) {
+    const honeycomb = document.getElementById('honeycomb');
+    honeycomb.innerHTML = '';
+    
+    let rowsData = temperatures[timeIndex];
+
+    rowsData.forEach((row) => {
+        const rowElement = document.createElement('div');
+        rowElement.className = 'row';
+        row.forEach(temp => {
+            const temp_correction = (temp/100).toFixed(1);
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.textContent = temp_correction;
+            cell.style.backgroundColor = getColor(temp_correction);
+            rowElement.appendChild(cell);
+        });
+        honeycomb.appendChild(rowElement);
+    });
+    const time_log = new Date(times[timeIndex]);
+    document.getElementById('timeDisplay').textContent = `시간: ${time_log.getFullYear()}년 ${time_log.getMonth()+1}월 ${time_log.getDate()}일 ${time_log.getHours()}시 ${time_log.getMinutes()}분`;
+}
+
+function getdata(date_now){
     const userid    = localStorage.getItem('user');
     const token     = localStorage.getItem('token');
     const device    = localStorage.getItem('device');
-    const date_now  = new Date();
 
     fetch('http://localhost:3000/user/log', {
         method: 'POST',
@@ -35,9 +98,14 @@ if(localStorage.getItem('user')==null || localStorage.getItem('token')==null){
     })
     .then(data => {
         const res = data.split("\r\n");
+        let temperatures    = [];
+        let times           = [];
+        let data_max        = 0;
+        const slider        = document.getElementById('timeSlider');
+        const prevBtn       = document.getElementById('prevBtn');
+        const nextBtn       = document.getElementById('nextBtn');
+
         if(res[0] == "log"){
-            let temperatures = [];
-            let times        = [];
             for (let index = 1; index < res.length-1; index++) {
                 let temperature = [];
                 const json = JSON.parse(res[index]);
@@ -49,77 +117,28 @@ if(localStorage.getItem('user')==null || localStorage.getItem('token')==null){
                 temperature.push(json.row4);
                 temperatures.push(temperature);
             }
-            
-            function getColor(temp) {
-                const minTemp = 0;
-                const maxTemp = 50;
-                const normalizedTemp = (temp - minTemp) / (maxTemp - minTemp);
-                let r, g, b;
-                if (normalizedTemp < 0.25) {
-                    b = 255 * (1 - normalizedTemp * 4);
-                    g = 255 * normalizedTemp * 4;
-                    r = 0;
-                } else if (normalizedTemp < 0.5) {
-                    b = 0;
-                    g = 255;
-                    r = 255 * (normalizedTemp - 0.25) * 4;
-                } else if (normalizedTemp < 0.75) {
-                    b = 0;
-                    g = 255 * (1 - (normalizedTemp - 0.5) * 4);
-                    r = 255;
-                } else {
-                    b = 0;
-                    g = 0;
-                    r = 255;
-                }
-                return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
-            }
-            
-            function updateHoneycomb(timeIndex) {
-                const honeycomb = document.getElementById('honeycomb');
-                honeycomb.innerHTML = '';
-                
-                let rowsData = temperatures[timeIndex];
-            
-                rowsData.forEach((row) => {
-                    const rowElement = document.createElement('div');
-                    rowElement.className = 'row';
-                    row.forEach(temp => {
-                        const temp_correction = (temp/100).toFixed(1);
-                        const cell = document.createElement('div');
-                        cell.className = 'cell';
-                        cell.textContent = temp_correction;
-                        cell.style.backgroundColor = getColor(temp_correction);
-                        rowElement.appendChild(cell);
-                    });
-                    honeycomb.appendChild(rowElement);
-                });
-                const time_log = new Date(times[timeIndex]);
-                document.getElementById('timeDisplay').textContent = `시간: ${time_log.getFullYear()}년 ${time_log.getMonth()+1}월 ${time_log.getDate()}일 ${time_log.getHours()}시 ${time_log.getMinutes()}분`;
-            }
-            
-            const slider    = document.getElementById('timeSlider');
-            const prevBtn   = document.getElementById('prevBtn');
-            const nextBtn   = document.getElementById('nextBtn');
-            const data_max  = temperatures.length-1;
+            if(temperatures.length>0) data_max  = temperatures.length-1;
             slider.max      = data_max;
             slider.value    = data_max;
-            
-            slider.addEventListener('input', () => updateHoneycomb(parseInt(slider.value)));
-            prevBtn.addEventListener('click', () => {
-                slider.value = Math.max(0, parseInt(slider.value) - 1);
-                updateHoneycomb(parseInt(slider.value));
-            });
-            nextBtn.addEventListener('click', () => {
-                slider.value = Math.min(data_max, parseInt(slider.value) + 1);
-                updateHoneycomb(parseInt(slider.value));
-            });
-            
-            window.addEventListener('resize', () => {
-                updateHoneycomb(parseInt(slider.value));
-            });
-            updateHoneycomb(data_max);
+        }else{
+            temperatures    = [[],[],[],[],[]];
+            times           = [date_now];
+            slider.max      = 0;
+            slider.value    = 0;
         }
+        slider.addEventListener('input', () => updateHoneycomb(temperatures, times, parseInt(slider.value)));
+        prevBtn.addEventListener('click', () => {
+            slider.value = Math.max(0, parseInt(slider.value) - 1);
+            updateHoneycomb(temperatures, times, parseInt(slider.value));
+        });
+        nextBtn.addEventListener('click', () => {
+            slider.value = Math.min(data_max, parseInt(slider.value) + 1);
+            updateHoneycomb(temperatures, times, parseInt(slider.value));
+        });
+        window.addEventListener('resize', () => {
+            updateHoneycomb(temperatures, times, parseInt(slider.value));
+        });
+        updateHoneycomb(temperatures, times, data_max);
     })
     .catch((error) => {
         console.error('Error:', error);

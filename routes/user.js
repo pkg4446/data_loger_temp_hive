@@ -149,33 +149,9 @@ router.post('/log', async function(req, res) {
                         yesterday = "0"+(temp_num-1);
                     }
                     if(file_system.check("./data/device/"+user_data.dvid+"/"+user_data.date[0]+"/"+user_data.date[1]+"/"+user_data.date[2]+".csv")){
-                        response    = "log\r\n";
-                        if(file_system.check("./data/device/"+user_data.dvid+"/"+user_data.date[0]+"/"+user_data.date[1]+"/"+yesterday+".csv")){
-                            response    += file_system.fileRead("./data/device/"+user_data.dvid+"/"+user_data.date[0]+"/"+user_data.date[1],yesterday+".csv");
-                        }
-                        response    += file_system.fileRead("./data/device/"+user_data.dvid+"/"+user_data.date[0]+"/"+user_data.date[1],user_data.date[2]+".csv");
+                        response    = "log\r\n" + file_system.fileRead("./data/device/"+user_data.dvid+"/"+user_data.date[0]+"/"+user_data.date[1],user_data.date[2]+".csv");
                     }else{
-                        let latest_path = "./data/device/"+user_data.dvid;
-                        let log_dir     = file_system.Dir(latest_path);
-                        if(log_dir.length>2){
-                            if(file_system.check(latest_path+"/"+user_data.date[0])){latest_path+="/"+user_data.date[0]}
-                            else if(file_system.check(latest_path+"/"+(user_data.date[0]-1))){latest_path+="/"+user_data.date[0]-1}
-                            else{response = "null";}
-                            if(response != "null"){
-                                log_dir = file_system.Dir(latest_path);
-                                if(log_dir.length>0){
-                                    latest_path += "/"+log_dir[log_dir.length-1];
-                                }
-                                log_dir = file_system.Dir(latest_path);
-                                if(log_dir.length>0){
-                                    response = "log\r\n"+file_system.fileRead(latest_path,log_dir[log_dir.length-1]);
-                                }else{
-                                    response = "null";
-                                }
-                            }
-                        }else{
-                            response = "null";
-                        }
+                        response = "null";
                     }
                 }else{
                     status_code = 403;
