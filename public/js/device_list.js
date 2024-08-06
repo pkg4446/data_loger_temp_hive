@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 여기에 실제 서버 URL을 입력하세요
         const userid    = localStorage.getItem('user');
         const token     = localStorage.getItem('token');
-        fetch('http://localhost:3002/user/list', {
+        fetch('http://localhost:3000/user/list', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

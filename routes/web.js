@@ -4,7 +4,7 @@ const router    = express.Router();
 
 router.get('/', async function(req, res) {
     const css = html.css("/public/css/main") + html.css("/public/css/hive");
-    const js  = html.js("/public/js/main") + html.js("/public/js/hive");
+    const js  = html.js("/public/js/main");
     const web_page = html.page("index",css,js);
     res.status(201).send(web_page);
 });

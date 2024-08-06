@@ -5,7 +5,7 @@ document.getElementById('userForm').addEventListener('submit', function(event) {
     const password  = document.getElementById('password').value;
     const passcheck = document.getElementById('passcheck').value;
 
-    fetch('http://localhost:3002/user/join', {
+    fetch('http://localhost:3000/user/join', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -6,7 +6,7 @@ document.getElementById('userForm').addEventListener('submit', function(event) {
     const device    = document.getElementById('device').value;
     const location  = document.getElementById('location').value;
 
-    fetch('http://localhost:3002/user/connect', {
+    fetch('http://localhost:3000/user/connect', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

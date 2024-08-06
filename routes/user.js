@@ -176,17 +176,6 @@ router.post('/log', async function(req, res) {
                         }else{
                             response = "null";
                         }
-                        /*
-                        if(file_system.check("./data/device/"+user_data.dvid+"/"+user_data.date[0]+"/"+user_data.date[1])){
-                            response += "day\r\n"+file_system.Dir("./data/device/"+user_data.dvid+"/"+user_data.date[0]+"/"+user_data.date[1]);
-                        }else if(file_system.check("./data/device/"+user_data.dvid+"/"+user_data.date[0])){
-                            response += "month\r\n"+file_system.Dir("./data/device/"+user_data.dvid+"/"+user_data.date[0]);
-                        }else if(file_system.check("./data/device/"+user_data.dvid)){
-                            response += "year\r\n"+file_system.Dir("./data/device/"+user_data.dvid);
-                        }else{
-                            
-                        }
-                        */
                     }
                 }else{
                     status_code = 403;
