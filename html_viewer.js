@@ -16,12 +16,12 @@ module.exports = {
     },
 
     css:   function(CSS){ 
-        const response = '<link href="'+CSS+'.css" rel="stylesheet" type="text/css" />';
+        const response = '<link href="/public/css/'+CSS+'.css" rel="stylesheet" type="text/css" />';
         return response;
     },
 
     js:   function(JS){ 
-        const response = '<script src = "'+JS+'.js"></script>';
+        const response = '<script src="/public/js/'+JS+'.js"></script>';
         return response;
     },
 }

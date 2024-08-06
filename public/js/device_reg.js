@@ -1,3 +1,6 @@
+if(localStorage.getItem('user')==null || localStorage.getItem('token')==null){
+    window.location.href = '/web/login';
+}
 document.getElementById('userForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
