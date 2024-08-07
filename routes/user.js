@@ -133,9 +133,10 @@ router.post('/log', async function(req, res) {
     const user_data = req.body;
     if(user_data.id!=undefined && user_data.token!=undefined && user_data.dvid!=undefined && user_data.date!=undefined){
         const   path_user   = "./data/user/"+user_data.id;
+        const   path_device = "./data/device/"+user_data.dvid;
         if(file_system.check(path_user+"/login.txt")){
             if(file_system.check(path_user) && file_system.fileRead(path_user,"login.txt")==user_data.token){
-                if(file_system.check(path_user+"/device.csv")){
+                if(file_system.check(path_device+"/owner.txt")&&(file_system.fileRead(path_device,"owner.txt")==user_data.id)){
                     status_code = 200;
                     response    = "ok";
                     if(user_data.date[1]<10){
