@@ -44,6 +44,7 @@ function getColor(temp) {
 }
 
 function updateHoneycomb(temperatures, times, timeIndex) {
+    console.log(temperatures.length);
     const honeycomb = document.getElementById('honeycomb');
     honeycomb.innerHTML = '';
     
@@ -120,25 +121,42 @@ function getdata(date_now){
             if(temperatures.length>0) data_max  = temperatures.length-1;
             slider.max      = data_max;
             slider.value    = data_max;
+
+            slider.addEventListener('input', () => updateHoneycomb(temperatures, times, parseInt(slider.value)));
+            prevBtn.addEventListener('click', () => {
+                let sliver_val  = parseInt(slider.value);
+                if(sliver_val>0)  sliver_val -= 1;
+                slider.value    = sliver_val;
+                updateHoneycomb(temperatures, times, parseInt(slider.value));
+            });
+            nextBtn.addEventListener('click', () => {
+                let sliver_val  = parseInt(slider.value);
+                if(sliver_val<data_max) sliver_val += 1;
+                slider.value    = sliver_val;
+                updateHoneycomb(temperatures, times, parseInt(slider.value));
+            });
+            window.addEventListener('resize', () => {
+                updateHoneycomb(temperatures, times, parseInt(slider.value));
+            });
+            updateHoneycomb(temperatures, times, data_max);
         }else{
             temperatures    = [[],[],[],[],[]];
             times           = [date_now];
             slider.max      = 0;
             slider.value    = 0;
+            /*
+            slider.addEventListener('input', () => {});
+            prevBtn.addEventListener('click', () => {});
+            nextBtn.addEventListener('click', () => {});
+            */
+            window.addEventListener('resize', () => {
+                updateHoneycomb(temperatures, times, parseInt(slider.value));
+            });
+            updateHoneycomb(temperatures, times, data_max);
+            
         }
-        slider.addEventListener('input', () => updateHoneycomb(temperatures, times, parseInt(slider.value)));
-        prevBtn.addEventListener('click', () => {
-            slider.value = Math.max(0, parseInt(slider.value) - 1);
-            updateHoneycomb(temperatures, times, parseInt(slider.value));
-        });
-        nextBtn.addEventListener('click', () => {
-            slider.value = Math.min(data_max, parseInt(slider.value) + 1);
-            updateHoneycomb(temperatures, times, parseInt(slider.value));
-        });
-        window.addEventListener('resize', () => {
-            updateHoneycomb(temperatures, times, parseInt(slider.value));
-        });
-        updateHoneycomb(temperatures, times, data_max);
+
+        
     })
     .catch((error) => {
         console.error('Error:', error);
