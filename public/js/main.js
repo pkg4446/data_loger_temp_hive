@@ -19,7 +19,8 @@ function day_change(flage){
     }
     document.getElementById('data_day').value = data_day.toISOString().substring(0, 10);
     const date_data = ""+data_day.getFullYear()+data_day.getMonth()+data_day.getDate();
-    if(temperatures[date_data] === undefined){
+    if(new Date().toISOString().substring(0, 10) === document.getElementById('data_day').value || temperatures[date_data] === undefined){
+        console.log("post!");
         getdata(data_day);
     }else{
         drawing(date_data);
