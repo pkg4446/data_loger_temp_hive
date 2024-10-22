@@ -13,7 +13,7 @@ module.exports = {
     },
 
     check:  function(FOLDER){
-        const PATH  = FOLDER + "/";
+        const PATH  = FOLDER;
         const CHECK = fs.existsSync(PATH, 'utf8')
         return CHECK;
     },
