@@ -151,11 +151,21 @@ function getdata(date_now){
                 let temperature = [];
                 const json = JSON.parse(res[index]);
                 times[date_data].push(json.date);
-                temperature.push(json.row0);
-                temperature.push(json.row1);
-                temperature.push(json.row2);
-                temperature.push(json.row3);
-                temperature.push(json.row4);
+                for (const key in json) {
+                    if(key != "date"){
+                        const element = json[key];
+                        let data = [];
+                        for (let index = element.length-1; index >= 0; index--) {
+                            const temp = element[index];
+                            if(data.length>0){
+                                const avg = data[data.length-1]+temp
+                                data.push(avg/2);
+                            }
+                            data.push(temp);
+                        }
+                        temperature.push(data);
+                    }
+                }
                 temperatures[date_data].push(temperature);
             }
         }else{
