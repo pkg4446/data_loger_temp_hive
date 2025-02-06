@@ -155,18 +155,21 @@ function getdata(date_now){
                     if(key != "date"){
                         const element = json[key];
                         let data = [];
-                        for (let index = element.length-1; index >= 0; index--) {
-                            const temp = element[index];
+                        element.forEach(temp=>{
                             if(data.length>0){
                                 const avg = data[data.length-1]+temp
                                 data.push(avg/2);
                             }
                             data.push(temp);
-                        }
+                        })
                         temperature.push(data);
                     }
                 }
-                temperatures[date_data].push(temperature);
+                let arrays = [];
+                for (let index = temperature.length-1; index >= 0 ; index--) {
+                    arrays.push(temperature[index]);
+                }
+                temperatures[date_data].push(arrays);
             }
         }else{
             temperatures[date_data]    = [[]];
