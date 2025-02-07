@@ -167,10 +167,6 @@ function getdata(date_now){
                     temperature.push(temperature_array);
                 }
                 temperatures[date_data].push(temperature);
-                if(index==1){
-                    console.log(rawdata);
-                    console.log(temperature);
-                }
             }
         }else{
             temperatures[date_data]    = [[]];
