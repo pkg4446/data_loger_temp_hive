@@ -148,28 +148,29 @@ function getdata(date_now){
 
         if(res[0] == "log"){
             for (let index = 1; index < res.length-1; index++) {
-                let temperature = [];
+                let rawdata = [];
                 const json = JSON.parse(res[index]);
                 times[date_data].push(json.date);
                 for (const key in json) {
                     if(key != "date"){
                         const element = json[key];
-                        let data = [];
-                        element.forEach(temp=>{
-                            if(data.length>0){
-                                const avg = data[data.length-1]+temp
-                                data.push(avg/2);
-                            }
-                            data.push(temp);
-                        })
-                        temperature.push(data);
+                        rawdata.push(element);
                     }
                 }
-                let arrays = [];
-                for (let index = temperature.length-1; index >= 0 ; index--) {
-                    arrays.push(temperature[index]);
+                let temperature = [];
+                for (let row = 0; row < rawdata[0].length; row++) {
+                    let temperature_array = [];
+                    for (let column = rawdata.length-1; column >= 0; column--) {
+                        if(temperature_array.length!=0)temperature_array.push((rawdata[column][row]+temperature_array[temperature_array.length-1])/2);
+                        temperature_array.push(rawdata[column][row]);
+                    }
+                    temperature.push(temperature_array);
                 }
-                temperatures[date_data].push(arrays);
+                temperatures[date_data].push(temperature);
+                if(index==1){
+                    console.log(rawdata);
+                    console.log(temperature);
+                }
             }
         }else{
             temperatures[date_data]    = [[]];
