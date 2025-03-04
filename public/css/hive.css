@@ -22,6 +22,7 @@ h1 {
 }
 .row {
     display: flex;
+    margin-left: -35px;
 }
 .cell {
     width: 60px;
@@ -43,6 +44,9 @@ h1 {
         -1px  1px 0 #000,
         1px  1px 0 #000;
     font-size: 16px;
+}
+.row:nth-child(even) {
+    margin-left: 35px;
 }
 .cell::after {
     content: '';
@@ -69,9 +73,6 @@ h1 {
 .cell:hover {
     transform: scale(1.1);
     z-index: 1;
-}
-.row:nth-child(even) {
-    margin-left: 68px;
 }
 .controls {
     display: flex;
@@ -122,18 +123,63 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     background-color: #dace2c;
 }
 
-@media (max-width: 800px) {
+
+@media (max-width: 1200px) {
+    .row {
+        margin-left: -35px;
+    }
+    .cell {
+        width: 54px;
+        height: 63px;
+    }
+    .row:nth-child(even) {
+        margin-left: 30px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .row {
+        margin-left: -30px;
+    }
+    .cell {
+        width: 48px;
+        height: 56px;
+        margin: -4px 4px;
+    }
+    .row:nth-child(even) {
+        margin-left: 28px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .row {
+        margin-left: -25px;
+    }
+    .cell {
+        width: 42px;
+        height: 49px;
+        margin: -3px 3px;
+    }
+    .row:nth-child(even) {
+        margin-left: 24px;
+    }
+}
+
+@media (max-width: 850px) {
     .honeycomb {
         flex-direction: row-reverse;
     }
     .row {
         flex-direction: column;
+        margin-left: 0;
     }
     .row:nth-child(even) {
         margin-left: 0;
     }
     .cell {
-        margin: 0px;
+        margin: 1px;
+        width:  50px;
+        height: 50px;
         clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
     }
     .cell::after {
@@ -145,5 +191,19 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     }
     .cell::before {
         clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    }
+}
+
+@media (max-width: 600px) {
+    .cell {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 500px) {
+    .cell {
+        width: 28px;
+        height: 28px;
     }
 }
