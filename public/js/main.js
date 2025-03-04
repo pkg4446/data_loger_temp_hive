@@ -158,15 +158,21 @@ function getdata(date_now){
                     }
                 }
                 let temperature = [];
+                
+                console.log("rawdata",rawdata);
+
                 for (let row = 0; row < rawdata[0].length; row++) {
                     let temperature_array = [];
                     for (let column = rawdata.length-1; column >= 0; column--) {
-                        if(temperature_array.length!=0)temperature_array.push((rawdata[column][row]+temperature_array[temperature_array.length-1])/2);
-                        temperature_array.push(rawdata[column][row]);
+                        if(temperature_array.length!=0)temperature_array.push((rawdata[row][column]+temperature_array[temperature_array.length-1])/2);
+                        temperature_array.push(rawdata[row][column]);
                     }
                     temperature.push(temperature_array);
                 }
                 temperatures[date_data].push(temperature);
+
+                console.log("2",temperatures[date_data]);
+
             }
         }else{
             temperatures[date_data]    = [[]];
